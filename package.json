@@ -1,5 +1,5 @@
 {
-    "name": "Gatherbot",
+    "name": "gatherbot",
     "version": "0.0.1",
     "description": "CSGO Gatherbot",
     "main": "index.js",
