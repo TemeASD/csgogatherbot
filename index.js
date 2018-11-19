@@ -16,7 +16,7 @@ const EnmapLevel = require("enmap-level");
 // or `bot.something`, this is what we're refering to. Your client.
 const client = new Discord.Client();
 
-// Here we load the config file that contains our token and our prefix values.
+// Here we load the config file that conta ins our token and our prefix values.
 client.config = require("./config.js");
 // client.config.token contains the bot's token
 // client.config.prefix contains the message prefix
@@ -33,7 +33,7 @@ client.aliases = new Enmap();
 // Now we integrate the use of Evie's awesome Enhanced Map module, which
 // essentially saves a collection to disk. This is great for per-server configs,
 // and makes things extremely easy for this purpose.
-client.settings = new Enmap({provider: new EnmapLevel({name: "settings"})});
+client.settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
 
 // We're doing real fancy node 8 async/await stuff here, and to do that
 // we need to wrap stuff in an anonymous function. It's annoying but it works.
@@ -71,7 +71,7 @@ const init = async () => {
   // Here we login the client.
   client.login(client.config.token);
 
-// End top-level async/await function.
+  // End top-level async/await function.
 };
 
 init();
