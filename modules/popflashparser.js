@@ -77,7 +77,6 @@ exports.showDetailedStats = (winningTeam) => {
     })
     return output;
   } else {
-    console.log(winningTeam);
     return '????????'
   }
 }
