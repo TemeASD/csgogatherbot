@@ -13,15 +13,25 @@ exports.help = {
 };
 
 
-var request = require('request-promise-native');
+const request = require('request-promise-native');
 const tabletojson = require('tabletojson');
 const cheerio = require('cheerio');
 
+let parsedMatchData = {
+  team1: {
+    'score': {
+    },
+  },
+  team2: {
+    'score': {
+    },
+  },
+}
+
 exports.run = async (client, message, args, level) => {
-  console.log('y')
-  let url = message.content.split(" ");
-  if (url[1] === undefined) { return message.channel.send(`Anna popflash match url`) }
-  await getMatchDatatoArray(url[1]).then(data => {
+  let url = args[0];
+  if (url === undefined/*TODO check onko popflash url*/) { return message.channel.send(`Anna popflash match url`) }
+  await getMatchDatatoArray(url).then(data => {
       if(data.team1.score > data.team2.score) {
         message.channel.send('Tiimi 1 voitti.')
         message.channel.send(prettyprintNames(data.team1.players));
@@ -34,7 +44,11 @@ exports.run = async (client, message, args, level) => {
 
 //Names to beautiful format, dunno how to use replacer to get rid of keys in JSON
 const prettyprintNames = function (JSONarray) {
-    return(`Pelaajat: ${JSONarray[0]['0']}, ${JSONarray[1]['0']}, ${JSONarray[2]['0']}, ${JSONarray[3]['0']}, ${JSONarray[4]['0']}`)
+  playerNames = [];
+  JSONarray.forEach(element => {
+    playerNames.push(element['0']);
+  });
+    return `Pelaajat: ${playerNames.join(', ')}`
 }
 /*sorttausfunktio
 field, string = json avain
@@ -58,17 +72,6 @@ const sort_by = function (field, reverse, primer) {
 
 const getMatchDatatoArray = async (url) => {
   //json object for later use
-  let parsedMatchData = {
-    team1: {
-      'score': {
-      },
-    },
-    team2: {
-      'score': {
-      },
-    },
-  }
-
   const options = {
     uri: url,
   };
