@@ -41,15 +41,16 @@ exports.getMatchData = async (url) => {
         let splitUrls = elem.attribs.href.split('/');
         if (splitUrls[1] === 'user') {
           if (a <= 4) {
-            parsedMatchData.team1.players[a]['pfID'] = splitUrls[2];
+            parsedMatchData.team1.players[a]['popflashId'] = splitUrls[2];
             a++;
           } else {
-            parsedMatchData.team2.players[a - 5]['pfID'] = splitUrls[2];
+            parsedMatchData.team2.players[a - 5]['popflashId'] = splitUrls[2];
             a++;
           }
         }
       });
     });
+    console.log(parsedMatchData.team1.players);
     return parsedMatchData;
   } catch (err) {
     console.log(err);

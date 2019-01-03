@@ -10,6 +10,7 @@ const { promisify } = require("util");
 const readdir = promisify(require("fs").readdir);
 const Enmap = require("enmap");
 const EnmapLevel = require("enmap-level");
+const mongoose = require('mongoose');
 
 // This is your client. Some people call it `bot`, some people call it `self`,
 // some might call it `cootchie`. Either way, when you see `client.something`,
@@ -37,6 +38,16 @@ client.settings = new Enmap({ provider: new EnmapLevel({ name: "settings" }) });
 
 // We're doing real fancy node 8 async/await stuff here, and to do that
 // we need to wrap stuff in an anonymous function. It's annoying but it works.
+mongoose.Promise = global.Promise;
+// Connecting to the database
+mongoose.connect(client.config.database.url, {
+  useNewUrlParser: true
+}).then(() => {
+  console.log('Successfully connected to the database');
+}).catch(err => {
+  console.log('Could not connect to the database. Exiting now...', err);
+  process.exit();
+});
 
 const init = async () => {
 

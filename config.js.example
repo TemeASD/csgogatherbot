@@ -12,6 +12,10 @@ const config = {
     "token": "",
 
     // Default per-server settings. New guilds have these settings. 
+    // Database settings
+    "database": {
+        "url": "" 
+    },
 
     // DO NOT LEAVE ANY OF THESE BLANK, AS YOU WILL NOT BE ABLE TO UPDATE THEM
     // VIA COMMANDS IN THE GUILD.
