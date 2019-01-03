@@ -36,6 +36,7 @@ exports.getMatchData  = async (url) => {
       parsedMatchData.team2.score = parseInt(parsedHTML('.score-2').text().trim());
       parsedMatchData.matchUrl = url;
     });
+    console.log(parsedMatchData.team1.players);
     return parsedMatchData;
   } catch (err) {
     console.log(err);
