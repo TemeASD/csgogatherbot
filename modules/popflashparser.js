@@ -16,7 +16,7 @@ let parsedMatchData = {
   },
 }
 
-exports.getMatchData  = async (url) => {
+exports.getMatchData = async (url) => {
   //json object for later use
   const options = {
     uri: url,
@@ -35,6 +35,20 @@ exports.getMatchData  = async (url) => {
       parsedMatchData.team1.score = parseInt(parsedHTML('.score-1').text().trim());
       parsedMatchData.team2.score = parseInt(parsedHTML('.score-2').text().trim());
       parsedMatchData.matchUrl = url;
+      //Get popflash id's to player arrays
+      let a = 0;
+      parsedHTML('a').each(function (i, elem) {
+        let splitUrls = elem.attribs.href.split('/');
+        if (splitUrls[1] === 'user') {
+          if (a <= 4) {
+            parsedMatchData.team1.players[a]['pfID'] = splitUrls[2];
+            a++;
+          } else {
+            parsedMatchData.team2.players[a - 5]['pfID'] = splitUrls[2];
+            a++;
+          }
+        }
+      });
     });
     console.log(parsedMatchData.team1.players);
     return parsedMatchData;
@@ -44,7 +58,29 @@ exports.getMatchData  = async (url) => {
   }
 }
 
+exports.showDetailedStats = (winningTeam) => {
+  let output = `Matsin URL: ${parsedMatchData.matchUrl}\n=============\nLopputulos: ${parsedMatchData.team1.score} - ${parsedMatchData.team2.score} \n`
+  let team1 = parsedMatchData.team1.players
+  let team2 = parsedMatchData.team2.players
 
+  if (winningTeam === 'team1') {
+    output += `=============\n`
+    output += `Voittajajoukkue:\n`
+    team1.forEach(e => {
+      output += `${e['0']} :: rating: ${e['6']}\n`
+    })
+    return output;
+  } else if (winningTeam === 'team2') {
+    output += `=============\n`
+    output += `Voittajajoukkue:\n`
+    team2.forEach(e => {
+      output += `${e['0']} :: rating: ${e['6']}\n`
+    })
+    return output;
+  } else {
+    return '????????'
+  }
+}
 
 
 
@@ -58,7 +94,7 @@ exports.prettyprintNames = (JSONarray) => {
   JSONarray.forEach(element => {
     playerNames.push(element['0']);
   });
-    return `Pelaajat: ${playerNames.join(', ')}`
+  return `Pelaajat: ${playerNames.join(', ')}`
 }
 
 /*
